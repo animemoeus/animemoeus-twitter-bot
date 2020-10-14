@@ -7,7 +7,7 @@ import secrets
 
 def get_data():
     response = requests.get('https://api.animemoe.us/quotes/random/').text
-    response = json.loads(response)
+    response = json.loads(response)['data']
     return response
 
 def create_status():
