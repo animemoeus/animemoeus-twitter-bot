@@ -1,35 +1,44 @@
-import requests
 import json
+import cloudscraper
 import tweepy
-import time
-import random
-import secrets
-
-def get_data():
-    response = requests.get('https://api.animemoe.us/quotes/random/').text
-    response = json.loads(response)['data']
-    return response
-
-def create_status():
-    #get twitter login session
-    auth = tweepy.OAuthHandler(secrets.alpha, secrets.beta)
-    auth.set_access_token(secrets.gamma, secrets.delta)
-    api = tweepy.API(auth)
-
-    data = get_data()
-
-    #create tweet
-    try:
-        print('Creating tweet.')
-        if len(data['text']) >= 280:
-            print('Tweet needs to be a bit shorter.')
-        else:
-            text = data['text']+'\n\n~'+data['author']+', '+data['source']
-            api.update_status(text)
-            print(text)
-    except:
-        print('Something wrong.')
+import secret
+from time import sleep
 
 
-if __name__ == '__main__':
-    create_status()
+def get_quote():
+    headers = {"Accept": "application/json"}
+
+    scraper = cloudscraper.create_scraper()
+    response = scraper.get("https://api.animemoe.us/quotes/random/v2/", headers=headers)
+
+    if response.status_code == 200:
+        response = json.loads(response._content)
+        return response
+    else:
+        return False
+
+
+def update_status():
+
+    quote = get_quote()
+
+    if quote:
+        auth = tweepy.OAuthHandler(secret.consumer_key, secret.consumer_secret)
+        auth.set_access_token(secret.key, secret.secret_key)
+        api = tweepy.API(auth)
+
+        try:
+            api.update_status(
+                f"{quote['quote']}\n\n{quote['character']}, {quote['anime']}"
+            )
+            print("Tweeet created!")
+        except:
+            print("Try again...")
+    else:
+        print("Try again...")
+
+
+if __name__ == "__main__":
+    while True:
+        update_status()
+        sleep(18000)  # sleep for 30 minutes
