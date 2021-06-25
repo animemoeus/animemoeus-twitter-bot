@@ -38,7 +38,4 @@ def update_status():
         print("Try again...")
 
 
-if __name__ == "__main__":
-    while True:
-        update_status()
-        sleep(18000)  # sleep for 30 minutes
+update_status()
