@@ -7,7 +7,7 @@ cloudscraper==1.2.58
 colorama==0.4.4
 idna==2.10
 mypy-extensions==0.4.3
-oauthlib==3.1.1
+oauthlib==3.2.0
 pathspec==0.9.0
 pyparsing==2.4.7
 PySocks==1.7.1
