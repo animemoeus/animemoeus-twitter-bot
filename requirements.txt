@@ -1,5 +1,5 @@
 ﻿appdirs==1.4.4
-black==21.12b0
+black==22.1.0
 certifi==2021.5.30
 chardet==4.0.0
 click==8.0.1
